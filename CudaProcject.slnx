@@ -7,4 +7,5 @@
   <Project Path="4. Rays, a Simple Camera, and Background/CudaRuntime2.vcxproj" Id="092fd2ea-284c-3982-3f4a-f6a5116fb6d8" />
   <Project Path="5. Adding a Sphere/5. Adding a Sphere.vcxproj" />
   <Project Path="6. Surface Normals and Multiple Objects/6. Surface Normals and Multiple Objects.vcxproj" />
+  <Project Path="7. Moving Camera Code Into Its Own Class/7. Moving Camera Code Into Its Own Class.vcxproj" />
 </Solution>
