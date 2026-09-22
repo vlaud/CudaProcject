@@ -8,7 +8,7 @@
 
 // Constants
 
-constexpr double Infinity = std::numeric_limits<double>::infinity();
+constexpr double infinity = std::numeric_limits<double>::infinity();
 constexpr double Pi = 3.1415926535897932385;
 
 // Utility Functions

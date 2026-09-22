@@ -9,6 +9,7 @@ class Camera
 public:
 	double aspectRatio = 1.0;	// 종횡비 
 	int imageWidth = 100;
+	int samplesPerPixel = 10;			// 각 픽셀 랜덤 샘플 개수
 
 	void Render(const Hittable& world)
 	{
@@ -19,23 +20,22 @@ public:
 		for (int scanlineIndex = 0; scanlineIndex < mImageHeight; scanlineIndex++)
 		{
 			std::clog
-				<< "\rSvanlines remaining: "
+				<< "\rScanlines remaining: "
 				<< (mImageHeight - scanlineIndex)
 				<< ' '
 				<< std::flush;
 
 			for (int pixelIndex = 0; pixelIndex < imageWidth; pixelIndex++)
 			{
-				auto pixelCenter =
-					mPixel00Location
-					+ (pixelIndex * mPixelDeltaU)
-					+ (scanlineIndex * mPixelDeltaV);
+				Color pixelColor(0.0, 0.0, 0.0);
 
-				auto rayDirection = pixelCenter - mCenter;
-				Ray r(mCenter, rayDirection);
+				for (int sampleIndex = 0; sampleIndex < samplesPerPixel; sampleIndex++)
+				{
+					Ray ray = GetRay(pixelIndex, scanlineIndex);
+					pixelColor += RayColor(ray, world);
+				}
 
-				Color PixelColor = RayColor(r, world);
-				WriteColor(std::cout, PixelColor);
+				WriteColor(std::cout, mPixelSamplesScale * pixelColor);
 			}
 		}
 
@@ -47,6 +47,8 @@ private:
 	{
 		mImageHeight = static_cast<int>(imageWidth / aspectRatio);
 		mImageHeight = (mImageHeight < 1) ? 1 : mImageHeight;
+
+		mPixelSamplesScale = 1.0 / static_cast<double>(samplesPerPixel);
 
 		mCenter = Point3(0.0, 0.0, 0.0);
 
@@ -73,6 +75,27 @@ private:
 		mPixel00Location = viewportUpperLeft + 0.5 * (mPixelDeltaU + mPixelDeltaV);
 	}
 
+	Ray GetRay(int pixelIndex, int scanlineIndex) const
+	{
+		// 원점에서 시작 -> 픽셀 위치(pixelIndex, scanlineIndex) 주변의 무작위로 샘플링된 지점을 향하는 카메라 광선
+
+		auto offset = sample_square();
+		auto pixel_sample =
+			mPixel00Location
+			+ ((pixelIndex + offset.X()) * mPixelDeltaU)
+			+ ((scanlineIndex + offset.Y()) * mPixelDeltaV);
+
+		auto rayOrigin = mCenter;
+		auto rayDirection = pixel_sample - rayOrigin;
+
+		return Ray(rayOrigin, rayDirection);
+	}
+
+	Vec3 sample_square() const
+	{
+		return Vec3(RandomDouble() - 0.5, RandomDouble() - 0.5, 0);
+	}
+
 	Color RayColor(const Ray& ray, const Hittable& world) const
 	{
 		HitRecord hitRecord;
@@ -89,11 +112,13 @@ private:
 	}
 
 private:
-	int mImageHeight = 0;		// 렌더 이미지 높이
-	Point3 mCenter;				// 카메라 중앙
-	Point3 mPixel00Location;	// 픽셀 0,0 위치
-	Vec3 mPixelDeltaU;			// 오른쪽 픽셀 오프셋
-	Vec3 mPixelDeltaV;			// 아래 픽셀 오프셋
+	int mImageHeight = 0;				// 렌더 이미지 높이
+	double mPixelSamplesScale = 1.0;	// 픽셀 샘플 합의 색 스케일 팩터
+
+	Point3 mCenter;						// 카메라 중앙
+	Point3 mPixel00Location;			// 픽셀 0,0 위치
+	Vec3 mPixelDeltaU;					// 오른쪽 픽셀 오프셋
+	Vec3 mPixelDeltaV;					// 아래 픽셀 오프셋
 };
 
 #endif // !CAMERA_H

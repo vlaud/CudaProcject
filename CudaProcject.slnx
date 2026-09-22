@@ -8,4 +8,5 @@
   <Project Path="5. Adding a Sphere/5. Adding a Sphere.vcxproj" />
   <Project Path="6. Surface Normals and Multiple Objects/6. Surface Normals and Multiple Objects.vcxproj" />
   <Project Path="7. Moving Camera Code Into Its Own Class/7. Moving Camera Code Into Its Own Class.vcxproj" />
+  <Project Path="8. Antialiasing/8. Antialiasing.vcxproj" />
 </Solution>
