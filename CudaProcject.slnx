@@ -9,4 +9,5 @@
   <Project Path="6. Surface Normals and Multiple Objects/6. Surface Normals and Multiple Objects.vcxproj" />
   <Project Path="7. Moving Camera Code Into Its Own Class/7. Moving Camera Code Into Its Own Class.vcxproj" />
   <Project Path="8. Antialiasing/8. Antialiasing.vcxproj" />
+  <Project Path="9. Diffuse Materials/9. Diffuse Materials.vcxproj" />
 </Solution>
