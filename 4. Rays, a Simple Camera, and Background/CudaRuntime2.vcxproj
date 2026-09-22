@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{092FD2EA-284C-3982-3F4A-F6A5116FB6D8}</ProjectGuid>
     <RootNamespace>CudaRuntime2</RootNamespace>
+    <ProjectName>4. Rays, a Simple Camera, and Background</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">

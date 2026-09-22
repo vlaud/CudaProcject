@@ -1,4 +1,8 @@
-x64\Debug\CudaRuntime2.exe > image.ppm
-
-
 루트 폴더에 cmd 입력
+
+x64\Debug\"프로젝트명.exe" > image.ppm 명령어 입력
+
+예)
+x64\Debug\"2. Output an Image.exe" > image.ppm
+
+
