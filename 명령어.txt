@@ -1,0 +1,4 @@
+x64\Debug\CudaRuntime2.exe > image.ppm
+
+
+루트 폴더에 cmd 입력
