@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{AC3E0717-0B55-F069-04FF-9AC5D64F417F}</ProjectGuid>
-    <RootNamespace>_3__The_vec3_Class</RootNamespace>
+    <ProjectGuid>{1E937266-A89F-18C6-12E2-3AA96DA11971}</ProjectGuid>
+    <RootNamespace>_5__Adding_a_Sphere</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="color.h" />
+    <ClInclude Include="ray.h" />
     <ClInclude Include="vec3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
