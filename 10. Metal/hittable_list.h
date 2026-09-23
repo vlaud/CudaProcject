@@ -4,8 +4,10 @@
 
 #include "hittable.h"
 
-#include <memory>
 #include <vector>
+
+using std::make_shared;
+using std::shared_ptr;
 
 class HittableList : public Hittable
 {
@@ -27,20 +29,15 @@ public:
 		mObjects.push_back(object);
 	}
 
-	bool Hit(
-		const Ray& ray,
-		double rayTMin,
-		double rayTMax,
-		HitRecord& hitRecord
-	) const override
+	bool Hit(const Ray& ray, interval ray_t, HitRecord& hitRecord) const override
 	{
 		HitRecord temporaryHitRecord;
 		bool bHitAnything = false;
-		auto closestSofar = rayTMax;
+		auto closestSofar = ray_t.max;
 
 		for (const auto& object : mObjects)
 		{
-			if (object->Hit(ray, rayTMin, closestSofar, temporaryHitRecord))
+			if (object->Hit(ray, interval(ray_t.min, closestSofar), temporaryHitRecord))
 			{
 				bHitAnything = true;
 				closestSofar = temporaryHitRecord.t;

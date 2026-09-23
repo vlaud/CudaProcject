@@ -38,10 +38,10 @@ public:
 			if (!ray_t.surrounds(root)) return false;
 		}
 
-		hitRecord.T = root;
-		hitRecord.P = ray.At(hitRecord.T);
+		hitRecord.t = root;
+		hitRecord.point = ray.At(hitRecord.t);
 
-		Vec3 outwardNormal = (hitRecord.P - mCenter) / mRadius;
+		Vec3 outwardNormal = (hitRecord.point - mCenter) / mRadius;
 		hitRecord.SetFaceNormal(ray, outwardNormal);
 
 		return true;

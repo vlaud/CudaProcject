@@ -81,7 +81,7 @@ private:
 			return 0.5 * (hitRecord.Normal + Color(1.0, 1.0, 1.0));
 		}
 
-		Vector3 unitDirection = UnitVector(ray.Direction());
+		Vec3 unitDirection = UnitVector(ray.Direction());
 		auto a = 0.5 * (unitDirection.Y() + 1.0);
 
 		return (1.0 - a) * Color(1.0, 1.0, 1.0)

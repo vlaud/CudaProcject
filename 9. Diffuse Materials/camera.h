@@ -110,10 +110,10 @@ private:
 		if (world.Hit(ray, interval(0.001, infinity), hitRecord))
 		{
 			Vec3 direction = hitRecord.Normal + RandomUnitVector();
-			return 0.1 * RayColor(Ray(hitRecord.P, direction), depth - 1, world);
+			return 0.1 * RayColor(Ray(hitRecord.point, direction), depth - 1, world);
 		}
 
-		Vector3 unitDirection = UnitVector(ray.Direction());
+		Vec3 unitDirection = UnitVector(ray.Direction());
 		auto a = 0.5 * (unitDirection.Y() + 1.0);
 
 		return (1.0 - a) * Color(1.0, 1.0, 1.0)

@@ -3,6 +3,7 @@
 #define CAMERA_H
 
 #include "hittable.h"
+#include "material.h"
 
 class Camera
 {
@@ -10,6 +11,7 @@ public:
 	double aspectRatio = 1.0;	// 종횡비 
 	int imageWidth = 100;
 	int samplesPerPixel = 10;			// 각 픽셀 랜덤 샘플 개수
+	int maxDepth = 10;	// 최대 레이 바운스 수
 
 	void Render(const Hittable& world)
 	{
@@ -32,7 +34,7 @@ public:
 				for (int sampleIndex = 0; sampleIndex < samplesPerPixel; sampleIndex++)
 				{
 					Ray ray = GetRay(pixelIndex, scanlineIndex);
-					pixelColor += RayColor(ray, world);
+					pixelColor += RayColor(ray, maxDepth, world);
 				}
 
 				WriteColor(std::cout, mPixelSamplesScale * pixelColor);
@@ -96,12 +98,27 @@ private:
 		return Vec3(RandomDouble() - 0.5, RandomDouble() - 0.5, 0);
 	}
 
-	Color RayColor(const Ray& ray, const Hittable& world) const
+	Color RayColor(const Ray& ray, int depth, const Hittable& world) const
 	{
-		HitRecord hitRecord;
-		if (world.Hit(ray, 0.0, infinity, hitRecord))
+		// 레이 바운스 한계를 넘으면 빛이 더 이상 없게 설정
+		if (depth <= 0)
 		{
-			return 0.5 * (hitRecord.Normal + Color(1.0, 1.0, 1.0));
+			return Color(0.0, 0.0, 0.0);
+		}
+
+		HitRecord hitRecord;
+
+		if (world.Hit(ray, interval(0.001, infinity), hitRecord))
+		{
+			Ray scattered;
+			Color attenuation;
+
+			if (hitRecord.material->Scatter(ray, hitRecord, attenuation, scattered))
+			{
+				return attenuation * RayColor(scattered, depth - 1, world);
+			}
+
+			return Color(0.0, 0.0, 0.0);
 		}
 
 		Vec3 unitDirection = UnitVector(ray.Direction());

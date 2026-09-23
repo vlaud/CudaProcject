@@ -9,11 +9,11 @@ class Ray
 public:
 	Ray() {}
 
-	Ray(const Point3& origin, const Vector3& direction)
+	Ray(const Point3& origin, const Vec3& direction)
 		: mOrig(origin), mDir(direction) {}
 
 	const Point3& Origin() const { return mOrig; }
-	const Vector3& Direction() const { return mDir; }
+	const Vec3& Direction() const { return mDir; }
 
 	Point3 At(double t) const
 	{
@@ -22,7 +22,7 @@ public:
 
 private:
 	Point3 mOrig;
-	Vector3 mDir;
+	Vec3 mDir;
 };
 
 #endif

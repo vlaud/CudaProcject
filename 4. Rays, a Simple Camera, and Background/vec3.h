@@ -4,36 +4,36 @@
 #include <cmath>
 #include <iostream>
 
-struct Vector3
+struct Vec3
 {
-	Vector3() : E{ 0,0,0 } {}
-	Vector3(double e0, double e1, double e2) : E{ e0,e1,e2 } {}
+	Vec3() : mElements{ 0,0,0 } {}
+	Vec3(double e0, double e1, double e2) : mElements{ e0,e1,e2 } {}
 
-	double X() const { return E[0]; }
-	double Y() const { return E[1]; }
-	double Z() const { return E[2]; }
+	double X() const { return mElements[0]; }
+	double Y() const { return mElements[1]; }
+	double Z() const { return mElements[2]; }
 
-	Vector3 operator-() const { return Vector3(-E[0], -E[1], -E[2]); }
-	double operator[](int i) const { return E[i]; }
-	double& operator[](int i) { return E[i]; }
+	Vec3 operator-() const { return Vec3(-mElements[0], -mElements[1], -mElements[2]); }
+	double operator[](int i) const { return mElements[i]; }
+	double& operator[](int i) { return mElements[i]; }
 
-	Vector3& operator+=(const Vector3& v)
+	Vec3& operator+=(const Vec3& v)
 	{
-		E[0] += v.E[0];
-		E[1] += v.E[1];
-		E[2] += v.E[2];
+		mElements[0] += v.mElements[0];
+		mElements[1] += v.mElements[1];
+		mElements[2] += v.mElements[2];
 		return *this;
 	}
 
-	Vector3& operator*=(double t)
+	Vec3& operator*=(double t)
 	{
-		E[0] *= t;
-		E[1] *= t;
-		E[2] *= t;
+		mElements[0] *= t;
+		mElements[1] *= t;
+		mElements[2] *= t;
 		return *this;
 	}
 
-	Vector3& operator/=(double t)
+	Vec3& operator/=(double t)
 	{
 		return *this *= 1 / t;
 	}
@@ -45,70 +45,70 @@ struct Vector3
 
 	double LengthSquared() const
 	{
-		return E[0] * E[0] + E[1] * E[1] + E[2] * E[2];
+		return mElements[0] * mElements[0] + mElements[1] * mElements[1] + mElements[2] * mElements[2];
 	}
 
-	double E[3];
+	double mElements[3];
 };
 
-typedef Vector3 Vec3;
+typedef Vec3 Vec3;
 
 // Point3 = Vector3 별칭, 코드 기하학적 명확성 위해 유용함
-using Point3 = Vector3;
+using Point3 = Vec3;
 
 
 // 벡터 유틸리티 함수들
 
-inline std::ostream& operator<<(std::ostream& out, const Vector3& v)
+inline std::ostream& operator<<(std::ostream& out, const Vec3& v)
 {
-	return out << v.E[0] << ' ' << v.E[1] << ' ' << v.E[2];
+	return out << v.mElements[0] << ' ' << v.mElements[1] << ' ' << v.mElements[2];
 }
 
-inline Vector3 operator+(const Vector3& u, const Vector3& v)
+inline Vec3 operator+(const Vec3& u, const Vec3& v)
 {
-	return Vector3(u.E[0] + v.E[0], u.E[1] + v.E[1], u.E[2] + v.E[2]);
+	return Vec3(u.mElements[0] + v.mElements[0], u.mElements[1] + v.mElements[1], u.mElements[2] + v.mElements[2]);
 }
 
-inline Vector3 operator-(const Vector3& u, const Vector3& v)
+inline Vec3 operator-(const Vec3& u, const Vec3& v)
 {
-	return Vector3(u.E[0] - v.E[0], u.E[1] - v.E[1], u.E[2] - v.E[2]);
+	return Vec3(u.mElements[0] - v.mElements[0], u.mElements[1] - v.mElements[1], u.mElements[2] - v.mElements[2]);
 }
 
-inline Vector3 operator*(const Vector3& u, const Vector3& v)
+inline Vec3 operator*(const Vec3& u, const Vec3& v)
 {
-	return Vector3(u.E[0] * v.E[0], u.E[1] * v.E[1], u.E[2] * v.E[2]);
+	return Vec3(u.mElements[0] * v.mElements[0], u.mElements[1] * v.mElements[1], u.mElements[2] * v.mElements[2]);
 }
 
-inline Vector3 operator*(double t, const Vector3& v)
+inline Vec3 operator*(double t, const Vec3& v)
 {
-	return Vector3(t * v.E[0], t * v.E[1], t * v.E[2]);
+	return Vec3(t * v.mElements[0], t * v.mElements[1], t * v.mElements[2]);
 }
 
-inline Vector3 operator*(const Vector3& v, double t)
+inline Vec3 operator*(const Vec3& v, double t)
 {
 	return t * v;
 }
 
-inline Vector3 operator/(const Vector3& v, double t)
+inline Vec3 operator/(const Vec3& v, double t)
 {
 	return (1 / t) * v;
 }
 
-inline double Dot(const Vector3& u, const Vector3& v)
+inline double Dot(const Vec3& u, const Vec3& v)
 {
-	return u.E[0] * v.E[0]
-		+ u.E[1] * v.E[1]
-		+ u.E[2] * v.E[2];
+	return u.mElements[0] * v.mElements[0]
+		+ u.mElements[1] * v.mElements[1]
+		+ u.mElements[2] * v.mElements[2];
 }
 
-inline Vector3 Cross(const Vector3& u, const Vector3& v)
+inline Vec3 Cross(const Vec3& u, const Vec3& v)
 {
-	return Vector3(u.E[1] * v.E[2] - u.E[2] * v.E[1],
-		u.E[2] * v.E[0] - u.E[0] * v.E[2],
-		u.E[0] * v.E[1] - u.E[1] * v.E[0]);
+	return Vec3(u.mElements[1] * v.mElements[2] - u.mElements[2] * v.mElements[1],
+		u.mElements[2] * v.mElements[0] - u.mElements[0] * v.mElements[2],
+		u.mElements[0] * v.mElements[1] - u.mElements[1] * v.mElements[0]);
 }
 
-inline Vector3 UnitVector(const Vector3& v)
+inline Vec3 UnitVector(const Vec3& v)
 {
 	return v / v.Length();
 }

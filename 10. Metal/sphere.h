@@ -6,19 +6,15 @@
 class Sphere : public Hittable
 {
 public:
-	Sphere(const Point3& center, double radius)
+	Sphere(const Point3& center, double radius, const std::shared_ptr<Material>& material)
 		: mCenter(center)
-		, mRadius(radius)
+		, mRadius(std::fmax(0.0, radius))
+		, mMaterial(material)
 	{
 
 	}
 
-	bool Hit(
-		const Ray& ray,
-		double rayTMin,
-		double rayTMax,
-		HitRecord& hitRecord
-	) const override
+	bool Hit(const Ray& ray, interval ray_t, HitRecord& hitRecord) const override
 	{
 		Vec3 originToCenter = mCenter - ray.Origin();
 
@@ -36,10 +32,10 @@ public:
 
 		// 범위 중 가장 가까운 루트 찾기 
 		auto root = (h - squareRootDiscriminant) / a;
-		if (root <= rayTMin || rayTMax <= root)
+		if (!ray_t.surrounds(root))
 		{
 			root = (h + squareRootDiscriminant) / a;
-			if (root <= rayTMin || rayTMax <= root) return false;
+			if (!ray_t.surrounds(root)) return false;
 		}
 
 		hitRecord.t = root;
@@ -48,10 +44,14 @@ public:
 		Vec3 outwardNormal = (hitRecord.point - mCenter) / mRadius;
 		hitRecord.SetFaceNormal(ray, outwardNormal);
 
+		hitRecord.material = mMaterial;
+
 		return true;
 	}
 private:
 	Point3 mCenter;
 	double mRadius;
+	std::shared_ptr<Material> mMaterial;
 };
+
 #endif

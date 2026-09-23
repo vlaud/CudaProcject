@@ -2,7 +2,13 @@
 
 x64\Debug\"프로젝트명.exe" > image.ppm 명령어 입력
 
-예)
-x64\Debug\"2. Output an Image.exe" > image.ppm
 
-
+x64\Debug\"2. Output an Image.exe" > "2. Output an Image.ppm"
+x64\Debug\"3. The vec3 Class.exe" > "3. The vec3 Class.ppm"
+x64\Debug\"4. Rays, a Simple Camera, and Background.exe" > "4. Rays, a Simple Camera, and Background.ppm"
+x64\Debug\"5. Adding a Sphere" > "5. Adding a Sphere.ppm"
+x64\Debug\"6. Surface Normals and Multiple Objects.exe" > "6. Surface Normals and Multiple Objects.ppm"
+x64\Debug\"7. Moving Camera Code Into Its Own Class.exe" > "7. Moving Camera Code Into Its Own Class.ppm"
+x64\Debug\"8. Antialiasing.exe" > "8. Antialiasing.ppm"
+x64\Debug\"9. Diffuse Materials.exe" >"9. Diffuse Materials.ppm"
+x64\Debug\"10. Metal.exe" >"10. Metal.ppm"

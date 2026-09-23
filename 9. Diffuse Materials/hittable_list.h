@@ -41,7 +41,7 @@ public:
 			if (object->Hit(ray, interval(ray_t.min, closestSofar), temporaryHitRecord))
 			{
 				bHitAnything = true;
-				closestSofar = temporaryHitRecord.T;
+				closestSofar = temporaryHitRecord.t;
 				hitRecord = temporaryHitRecord;
 			}
 		}

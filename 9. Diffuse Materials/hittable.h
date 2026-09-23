@@ -14,9 +14,9 @@ public:
 		bFrontFace = Dot(r.Direction(), outwardNormal) < 0;
 		Normal = bFrontFace ? outwardNormal : -outwardNormal;
 	}
-	Point3 P;
+	Point3 point;
 	Vec3 Normal;
-	double T;
+	double t;
 	bool bFrontFace;
 };
 

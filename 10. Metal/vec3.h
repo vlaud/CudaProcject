@@ -48,10 +48,27 @@ struct Vec3
 		return mElements[0] * mElements[0] + mElements[1] * mElements[1] + mElements[2] * mElements[2];
 	}
 
-	double mElements[3];
-};
+	bool NearZero() const
+	{
+		auto threshold = 1e-8;
 
-typedef Vec3 Vec3;
+		return (std::fabs(mElements[0]) < threshold)
+			&& (std::fabs(mElements[1]) < threshold)
+			&& (std::fabs(mElements[2]) < threshold);
+	}
+
+	static Vec3 Random()
+	{
+		return Vec3(RandomDouble(), RandomDouble(), RandomDouble());
+	}
+
+	static Vec3 Random(double min, double max)
+	{
+		return Vec3(RandomDouble(min, max), RandomDouble(min, max), RandomDouble(min, max));
+	}
+
+	double mElements[3] = {};
+};
 
 // Point3 = Vector3 별칭, 코드 기하학적 명확성 위해 유용함
 using Point3 = Vec3;
@@ -113,5 +130,37 @@ inline Vec3 UnitVector(const Vec3& v)
 	return v / v.Length();
 }
 
+inline Vec3 RandomUnitVector()
+{
+	while (true)
+	{
+		auto p = Vec3::Random(-1.0, 1.0);
+		auto lengthSquared = p.LengthSquared();
 
+		if (1e-160 < lengthSquared && lengthSquared <= 1.0)
+		{
+			return p / std::sqrt(lengthSquared);
+		}
+	}
+}
+
+inline Vec3 RandomOnHemisphere(const Vec3& normal)
+{
+	Vec3 unitSphereDirection = RandomUnitVector();
+
+	// 표면 법선과 무작위 벡터 내적 구함
+	// 내적이 양수면 벡터가 올바른 반구에 있음
+	if (Dot(unitSphereDirection, normal) > 0.0)
+	{
+		return unitSphereDirection;
+	}
+
+	// 내적이 음수면 벡터 반전
+	return -unitSphereDirection;
+}
+
+inline Vec3 Reflect(const Vec3& v, const Vec3& n)
+{
+	return v - 2.0 * Dot(v, n) * n;
+}
 #endif
