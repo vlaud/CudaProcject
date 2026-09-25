@@ -11,13 +11,13 @@ public:
 		// 히트 레코드 법선 벡터 설정
 		// 참고: 매개변수 'outwardNormal'은 단위 길이를 가진다고 가정
 
-		bFrontFace = Dot(r.Direction(), outwardNormal) < 0;
-		Normal = bFrontFace ? outwardNormal : -outwardNormal;
+		frontFace = Dot(r.Direction(), outwardNormal) < 0;
+		Normal = frontFace ? outwardNormal : -outwardNormal;
 	}
 	Point3 point;
 	Vec3 Normal;
 	double t;
-	bool bFrontFace;
+	bool frontFace;
 };
 
 class Hittable
