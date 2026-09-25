@@ -95,7 +95,7 @@ public:
 
 		Vec3 direction;
 
-		if (cannotRefract || Reflectance(cosTheta, refractionRatio) > RandomDouble())
+		if (cannotRefract)
 		{
 			direction = Reflect(unitDirection, hitRecord.Normal);
 		}
