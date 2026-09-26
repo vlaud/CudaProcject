@@ -19,7 +19,7 @@ public:
 		for (int scanlineIndex = 0; scanlineIndex < mImageHeight; scanlineIndex++)
 		{
 			std::clog
-				<< "\rSvanlines remaining: "
+				<< "\rScanlines remaining: "
 				<< (mImageHeight - scanlineIndex)
 				<< ' '
 				<< std::flush;

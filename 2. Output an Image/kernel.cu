@@ -11,6 +11,7 @@ int main()
 
     for (int j = 0; j < ImageHeight; j++)
     {
+        std::clog << "\rScanlines remaining: " << (ImageHeight - j) << ' ' << std::flush;
         for (int i = 0; i < ImageWidth; i++)
         {
             auto r = double(i) / (ImageWidth - 1);
@@ -24,6 +25,8 @@ int main()
             std::cout << ir << ' ' << ig << ' ' << ib << '\n';
         }
     }
+
+    std::clog << "\rDone.                 \n";
 
     return 0;
 }

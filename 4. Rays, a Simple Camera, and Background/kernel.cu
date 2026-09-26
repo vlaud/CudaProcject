@@ -43,7 +43,7 @@ int main()
 
 	for (int j = 0; j < imageHeight; j++)
 	{
-		std::clog << "\rSvanlines remaining: " << (imageHeight - j) << ' ' << std::flush;
+		std::clog << "\rScanlines remaining: " << (imageHeight - j) << ' ' << std::flush;
 		for (int i = 0; i < imageWidth; i++)
 		{
 			auto pixelCenter = pixel00Loc + (i * pixelDeltaU) + (j * pixelDeltaV);
