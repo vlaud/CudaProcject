@@ -51,9 +51,7 @@ struct Vec3
 	double mElements[3];
 };
 
-typedef Vec3 Vec3;
-
-// Point3 = Vector3 별칭, 코드 기하학적 명확성 위해 유용함
+// Point3 = Vec3 별칭, 코드 기하학적 명확성 위해 유용함
 using Point3 = Vec3;
 
 
@@ -112,6 +110,5 @@ inline Vec3 UnitVector(const Vec3& v)
 {
 	return v / v.Length();
 }
-
 
 #endif
