@@ -8,6 +8,12 @@ cmake_minimum_required ( VERSION 3.1.0...4.0.0 )
 
 project ( RTWeekend LANGUAGES CXX )
 
+# 2. 시스템에 CUDA가 설치되어 있는지 명시적으로 찾습니다.
+find_package(CUDAToolkit REQUIRED)
+
+# 3. 그 후 CUDA 언어를 활성화합니다.
+enable_language(CUDA)
+
 # Set to C++11
 set ( CMAKE_CXX_STANDARD          11 )
 set ( CMAKE_CXX_STANDARD_REQUIRED ON )
@@ -15,68 +21,23 @@ set ( CMAKE_CXX_EXTENSIONS        OFF )
 
 # Source
 
-set ( EXTERNAL
-  src/external/stb_image.h
+set ( 2_OUTPUT_AN_IMAGE
+  "2. Output an Image/kernel.cu"
 )
 
-set ( SOURCE_ONE_WEEKEND
-  src/InOneWeekend/main.cc
-  src/InOneWeekend/camera.h
-  src/InOneWeekend/color.h
-  src/InOneWeekend/hittable.h
-  src/InOneWeekend/hittable_list.h
-  src/InOneWeekend/interval.h
-  src/InOneWeekend/material.h
-  src/InOneWeekend/ray.h
-  src/InOneWeekend/rtweekend.h
-  src/InOneWeekend/sphere.h
-  src/InOneWeekend/vec3.h
+set ( 3_THE_VEC3_CLASS
+  "3. The vec3 Class/kernel.cu"
+  "3. The vec3 Class/color.h"
+  "3. The vec3 Class/vec3.h"
 )
 
-set ( SOURCE_NEXT_WEEK
-  src/TheNextWeek/main.cc
-  src/TheNextWeek/aabb.h
-  src/TheNextWeek/bvh.h
-  src/TheNextWeek/camera.h
-  src/TheNextWeek/color.h
-  src/TheNextWeek/constant_medium.h
-  src/TheNextWeek/hittable.h
-  src/TheNextWeek/hittable_list.h
-  src/TheNextWeek/interval.h
-  src/TheNextWeek/material.h
-  src/TheNextWeek/perlin.h
-  src/TheNextWeek/quad.h
-  src/TheNextWeek/ray.h
-  src/TheNextWeek/rtw_stb_image.h
-  src/TheNextWeek/rtweekend.h
-  src/TheNextWeek/sphere.h
-  src/TheNextWeek/texture.h
-  src/TheNextWeek/vec3.h
+set ( 4_RAYS_A_SIMPLE_CAMERA_AND_BACKGROUND
+  "4. Rays, a Simple Camera, and Background/kernel.cu"
+  "4. Rays, a Simple Camera, and Background/color.h"
+  "4. Rays, a Simple Camera, and Background/vec3.h"
+  "4. Rays, a Simple Camera, and Background/ray.h"
 )
 
-set ( SOURCE_REST_OF_YOUR_LIFE
-  src/TheRestOfYourLife/main.cc
-  src/TheRestOfYourLife/aabb.h
-  src/TheRestOfYourLife/camera.h
-  src/TheRestOfYourLife/color.h
-  src/TheRestOfYourLife/constant_medium.h
-  src/TheRestOfYourLife/hittable.h
-  src/TheRestOfYourLife/hittable_list.h
-  src/TheRestOfYourLife/interval.h
-  src/TheRestOfYourLife/material.h
-  src/TheRestOfYourLife/onb.h
-  src/TheRestOfYourLife/pdf.h
-  src/TheRestOfYourLife/perlin.h
-  src/TheRestOfYourLife/quad.h
-  src/TheRestOfYourLife/ray.h
-  src/TheRestOfYourLife/rtw_stb_image.h
-  src/TheRestOfYourLife/rtweekend.h
-  src/TheRestOfYourLife/sphere.h
-  src/TheRestOfYourLife/texture.h
-  src/TheRestOfYourLife/vec3.h
-)
-
-include_directories(src)
 
 # Specific compiler flags below. We're not going to add options for all possible compilers, but if
 # you're new to CMake (like we are), the following may be a helpful example if you're using a
@@ -87,32 +48,17 @@ message (STATUS "Release flags: " ${CMAKE_CXX_FLAGS_RELEASE})
 message (STATUS "Debug flags: " ${CMAKE_CXX_FLAGS_DEBUG})
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    # /wd #### - Disable warning
-    # /we #### - treat warning as error
-    add_compile_options("/W4")      # Enable level-4 warnings
-    add_compile_options("/we 4265") # Class has virtual functions, but its non-trivial destructor is not virtual
-    add_compile_options("/we 5204") # Class has virtual functions, but its trivial destructor is not virtual
-    add_compile_options("/wd 4100") # unreferenced formal parameter
+    # CXX(C++) 소스파일을 컴파일할 때만 해당 플래그들을 적용하도록 묶어줍니다.
+    add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:/W4;/we4265;/we5204;/wd4100;/wd4819>")
+    
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-Wnon-virtual-dtor) # Class has virtual functions, but its destructor is not virtual
-    add_compile_options(-Wreorder) # Data member will be initialized after [other] data member
-    add_compile_options(-Wmaybe-uninitialized) # Variable improperly initialized
-    add_compile_options(-Wunused-variable) # Variable is defined but unused
+    add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-Wnon-virtual-dtor;-Wreorder;-Wmaybe-uninitialized;-Wunused-variable>")
+    
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-Wnon-virtual-dtor) # Class has virtual functions, but its destructor is not virtual
-    add_compile_options(-Wreorder) # Data member will be initialized after [other] data member
-    add_compile_options(-Wsometimes-uninitialized) # Variable improperly initialized
-    add_compile_options(-Wunused-variable) # Variable is defined but unused
+    add_compile_options("$<$<COMPILE_LANGUAGE:CXX>:-Wnon-virtual-dtor;-Wreorder;-Wsometimes-uninitialized;-Wunused-variable>")
 endif()
 
 # Executables
-add_executable(inOneWeekend      ${EXTERNAL} ${SOURCE_ONE_WEEKEND})
-add_executable(theNextWeek       ${EXTERNAL} ${SOURCE_NEXT_WEEK})
-add_executable(theRestOfYourLife ${EXTERNAL} ${SOURCE_REST_OF_YOUR_LIFE})
-add_executable(cos_cubed         src/TheRestOfYourLife/cos_cubed.cc         )
-add_executable(cos_density       src/TheRestOfYourLife/cos_density.cc       )
-add_executable(integrate_x_sq    src/TheRestOfYourLife/integrate_x_sq.cc    )
-add_executable(pi                src/TheRestOfYourLife/pi.cc                )
-add_executable(estimate_halfway  src/TheRestOfYourLife/estimate_halfway.cc  )
-add_executable(sphere_importance src/TheRestOfYourLife/sphere_importance.cc )
-add_executable(sphere_plot       src/TheRestOfYourLife/sphere_plot.cc       )
+add_executable(2_output_an_image     ${2_OUTPUT_AN_IMAGE})
+add_executable(3_the_vec3_class     ${3_THE_VEC3_CLASS})
+add_executable(4_rays_simple_camera_and_bg       ${4_RAYS_A_SIMPLE_CAMERA_AND_BACKGROUND})

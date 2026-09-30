@@ -5,6 +5,7 @@ x64\Debug\"프로젝트명.exe" > image.ppm 명령어 입력
 
 x64\Debug\"2. Output an Image.exe" > "2. Output an Image.ppm"
 x64\Debug\"3. The vec3 Class.exe" > "3. The vec3 Class.ppm"
+x64\Debug\"4. Rays, a Simple Camera, and Background.exe" > "4. black.ppm"
 x64\Debug\"4. Rays, a Simple Camera, and Background.exe" > "4. Rays, a Simple Camera, and Background.ppm"
 x64\Debug\"5. Adding a Sphere" > "5. Adding a Sphere.ppm"
 x64\Debug\"6. Surface Normals and Multiple Objects.exe" > "6. Surface Normals and Multiple Objects.ppm"
