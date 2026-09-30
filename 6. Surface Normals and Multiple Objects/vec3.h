@@ -1,9 +1,6 @@
 #ifndef VEC3_H
 #define VEC3_H
 
-#include <cmath>
-#include <iostream>
-
 struct Vec3
 {
 	Vec3() : mElements{ 0,0,0 } {}

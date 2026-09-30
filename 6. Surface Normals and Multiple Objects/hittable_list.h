@@ -2,9 +2,9 @@
 #ifndef HITTABLE_LIST_H
 #define HITTABLE_LIST_H
 
+#include "RtWeekend.h"
 #include "hittable.h"
 
-#include <memory>
 #include <vector>
 
 class HittableList : public Hittable
@@ -27,24 +27,22 @@ public:
 		mObjects.push_back(object);
 	}
 
-	bool Hit(
-		const Ray& ray,
-		double rayTMin,
-		double rayTMax,
-		HitRecord& hitRecord
-	) const override
+	bool Hit(const Ray& ray, interval rayT, HitRecord& hitRecord) const override
 	{
 		HitRecord temporaryHitRecord;
 		bool bHitAnything = false;
-		auto closestSofar = rayTMax;
+		auto closestSofar = rayT.max;
 
 		for (const auto& object : mObjects)
 		{
-			if (object->Hit(ray, rayTMin, closestSofar, temporaryHitRecord))
+			for (const auto& object : mObjects)
 			{
-				bHitAnything = true;
-				closestSofar = temporaryHitRecord.t;
-				hitRecord = temporaryHitRecord;
+				if (object->Hit(ray, interval(rayT.min, closestSofar), temporaryHitRecord))
+				{
+					bHitAnything = true;
+					closestSofar = temporaryHitRecord.t;
+					hitRecord = temporaryHitRecord;
+				}
 			}
 		}
 

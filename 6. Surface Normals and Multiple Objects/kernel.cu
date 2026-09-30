@@ -1,25 +1,13 @@
 ﻿#include "rtweekend.h"
 
+#include "hittable.h"
 #include "hittable_list.h"
 #include "sphere.h"
-
-double HitSphere(const Point3& center, double radius, const Ray& ray)
-{
-	Vec3 oc = center - ray.Origin();
-	auto a = ray.Direction().LengthSquared();
-	auto h = Dot(ray.Direction(), oc);
-	auto c = oc.LengthSquared() - radius * radius;
-	auto discriminant = h * h - a * c;
-
-	if (discriminant < 0.0) return -1.0;
-
-	return (h - std::sqrt(discriminant)) / a;
-}
 
 Color RayColor(const Ray& ray, const Hittable& world)
 {
 	HitRecord hitRecord;
-	if (world.Hit(ray, 0.0, infinity, hitRecord))
+	if (world.Hit(ray, interval(0.0, infinity), hitRecord))
 	{
 		return 0.5 * (hitRecord.Normal + Color(1.0, 1.0, 1.0));
 	}

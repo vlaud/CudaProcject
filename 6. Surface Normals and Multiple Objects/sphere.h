@@ -13,12 +13,7 @@ public:
 
 	}
 
-	bool Hit(
-		const Ray& ray,
-		double rayTMin,
-		double rayTMax,
-		HitRecord& hitRecord
-	) const override
+	bool Hit(const Ray& ray, interval rayT, HitRecord& hitRecord) const override
 	{
 		Vec3 originToCenter = mCenter - ray.Origin();
 
@@ -36,10 +31,10 @@ public:
 
 		// 범위 중 가장 가까운 루트 찾기 
 		auto root = (h - squareRootDiscriminant) / a;
-		if (root <= rayTMin || rayTMax <= root)
+		if (!rayT.surrounds(root))
 		{
 			root = (h + squareRootDiscriminant) / a;
-			if (root <= rayTMin || rayTMax <= root) return false;
+			if (!rayT.surrounds(root)) return false;
 		}
 
 		hitRecord.t = root;
