@@ -4,10 +4,10 @@
 
 Color RayColor(const Ray& r)
 {
-	Vec3 unitDirection = UnitVector(r.Direction());
-	auto a = 0.5 * (unitDirection.Y() + 1.0);
+	Vec3 unitDirection = UnitVector(r.Direction()); // 레이 벡터 정규화
+	auto a = 0.5 * (unitDirection.Y() + 1.0); // unitDirection.Y가 -1이면 0(하얀색), 1이면 1(파란색)
 
-	return (1.0 - a) * Color(1.0, 1.0, 1.0) + a * Color(0.5, 0.7, 1.0);
+	return (1.0 - a) * Color(1.0, 1.0, 1.0) + a * Color(0.5, 0.7, 1.0); // 선형 보간 (1: 파란색, 0: 하얀색)
 }
 
 int main()
