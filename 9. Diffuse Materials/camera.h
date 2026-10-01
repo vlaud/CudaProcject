@@ -7,10 +7,10 @@
 class Camera
 {
 public:
-	double aspectRatio = 1.0;	// 종횡비 
-	int imageWidth = 100;
-	int samplesPerPixel = 10;			// 각 픽셀 랜덤 샘플 개수
-	int maxDepth = 10;	// 최대 레이 바운스 수
+	double aspectRatio = 1.0;	// 이미지 너비 대 높이의 비율
+	int imageWidth = 100;		// 렌더링된 이미지의 너비 (픽셀 단위)
+	int samplesPerPixel = 10;	// 각 픽셀 랜덤 샘플 개수
+	int maxDepth = 10;			// 장면 내 광선(ray)의 최대 반사 횟수
 
 	void Render(const Hittable& world)
 	{
@@ -99,7 +99,7 @@ private:
 
 	Color RayColor(const Ray& ray, int depth, const Hittable& world) const
 	{
-		// 레이 바운스 한계를 넘으면 빛이 더 이상 없게 설정
+		// 광선 반사 제한을 초과하면 더 이상 빛을 수집하지 않습니다.
 		if (depth <= 0)
 		{
 			return Color(0.0, 0.0, 0.0);
